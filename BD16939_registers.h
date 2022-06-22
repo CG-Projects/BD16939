@@ -1,10 +1,9 @@
 /*******************************************************************************
  *   $FILE:  BD16939.h
- *   Brief:  Header file for Project configuration
+ *   Brief:  contains register configuration for BD16939
  *   CGProjects:  https:/www.cgprojects.it
  *   Support email:  support@cgprojects.it
  ******************************************************************************/
-
 
 #ifndef BD16939_H_
 #define BD16939_H_
