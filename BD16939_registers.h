@@ -27,36 +27,38 @@ The sequence is not critical though..
 */
 #pragma once
 
+#define ON 1
+#define OFF 0
 // Input-Registers -> Value means base-address without settings
-#define INPUT_REGA 0x8000
-#define INPUT_REGB 0xC000
-#define OUTPUT_REGA0 0x0000
-#define OUTPUT_REGA1 0x2000
-#define OUTPUT_REGB0 0x4000
-#define OUTPUT_REGB1 0x6000
+#define INPUT_REGA 0x8000U
+#define INPUT_REGB 0xC000U
+#define OUTPUT_REGA0 0x0000U
+#define OUTPUT_REGA1 0x2000U
+#define OUTPUT_REGB0 0x4000U
+#define OUTPUT_REGB1 0x6000U
 // **** Write-Bits A & B ****
 // (Value means Bit-positions in 16Bit MSB-first)
-#define WRITE_ENABLE 15
-#define WRITE_ADDRESS 14 // REG A/B
-#define READ_ADDRESS 13  // REG-PAGE 0/1
+#define WE 15
+#define WR_AD 14 // REG A/B
+#define RD_AD 13  // REG-PAGE 0/1
 // **** Write-Reg.A ****
-#define STATUS_RESET 12 // Status Reset Register (This bit will self-clear)
-#define HIGHSIDE4 11
-#define LOWSIDE4 10
-#define HIGHSIDE3 9
-#define LOWSIDE3 8
-#define HIGHSIDE2 7
-#define LOWSIDE2 6
-#define HIGHSIDE1 5
-#define LOWSIDE1 4
+#define SSR 12 // Status Reset Register (This bit will self-clear)
+#define HSC4 11
+#define LSC4 10
+#define HSC3 9
+#define LSC3 8
+#define HSC2 7
+#define LSC2 6
+#define HSC1 5
+#define LSC1 4
 #define UNDERLOAD 3 // Under Loads Register Mode (OUT1 to OUT6)
 #define TSDSTH 2    // Thermal-Shut-DOwn Register Mode
 #define PSSTH 1
 // **** Write-Reg.B ****
-#define HIGHSIDE6 7
-#define LOWSIDE6 6
-#define HIGHSIDE5 5
-#define LOWSIDE5 4
+#define HSC6 7
+#define LSC6 6
+#define HSC5 5
+#define LSC5 4
 #define OVPSEL 3 // Over-Voltage-Proteciton threshold SElect
 // **** Read-Reg.A0 ****
 #define TSDS 14      // Thermal Shutdown Status

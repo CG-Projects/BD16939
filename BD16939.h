@@ -53,7 +53,7 @@ namespace BD16939
 {
   enum halfbridge
   {
-    hb1,
+    hb1=1,
     hb2,
     hb3,
     hb4,
@@ -63,16 +63,21 @@ namespace BD16939
 
   enum fullbridge
   {
-    motA,
+    motA=1,
     motB,
     motC,
+    all,
   };
 
   enum switchstate
   {
     low = 0,
-    high,
+    high = 1,
+    on = 1,
+    highZ,
     off,
+    offHigh,
+    offLow,
     left,
     right,
   };
@@ -80,28 +85,38 @@ namespace BD16939
   class Driver
   {
   private:
-    SPIClass* spi;
-    SPISettings spisettings;       
-    uint8_t sspin; 
+    SPIClass *spi;
+    SPISettings spisettings;
+    uint8_t sspin;
     int8_t state;
-    uint16_t reg_write[2];
-    uint16_t reg_state[4];
+    uint16_t reg_in1;
+    uint16_t reg_in2;
+    uint16_t reg_out1;
+    uint16_t reg_out2;
+    uint16_t reg_out3;
+    uint16_t reg_out4;
+
+    void updateregs(); // Sends the input-registers and recieves all four output-registers
     
 
-  public:    
-    Driver():
-      spi(nullptr),
-      spisettings(SPISettings(1000000,MSBFIRST,SPI_MODE1)),
-      sspin(-1),
-      state(UNDEFINED)    
-    {}
+  public:
+    Driver() : spi(nullptr),
+               spisettings(SPISettings(1000000 /*1MHz*/, MSBFIRST, SPI_MODE1)),
+               sspin(-1),
+               state(UNDEFINED)
+    {
+    }
 
-    bool begin(SPIClass* /*pSPIClass*/, uint8_t /*SS*/, uint32_t /*SPI-Frequency*/);
-    bool begin(SPIClass* /*pSPIClass*/, uint8_t /*SS*/);
+    bool begin(SPIClass * /*pSPIClass*/, uint8_t /*SS*/, uint32_t /*SPI-Frequency*/);
+    bool begin(SPIClass * /*pSPIClass*/, uint8_t /*SS*/);
+
     uint16_t send(uint16_t); // ..just for debugging purposes..
     int8_t setbridge(halfbridge /*hb-number(1->6)*/, switchstate);
     int8_t setmotor(fullbridge /*Motor*/, switchstate);
     int8_t getstate();
+    void printstate(); // print out driver state..
+    void printregs(); // print out all input and output register..
+    void reset(); // reset driver
   };
 };
 
