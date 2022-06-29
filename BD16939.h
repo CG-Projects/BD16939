@@ -1,42 +1,109 @@
 /*******************************************************************************
  *   $FILE:  BD16939.h
- *   Brief:  Header file for Project configuration
+ *   Brief:  Header file for the BD16939 SPI triple H-Bridge
  *   CGProjects:  https:/www.cgprojects.it
  *   Support email:  support@cgprojects.it
  ******************************************************************************/
-/*  License
- */
 
-#ifndef BD16939_H_
-#define BD16939_H_
+/******************************************************************************
+                           Rhom BD16939 Description
+*******************************************************************************
 
-// ============================================================================
-// Configuration
-// ============================================================================
+[Datasheet](https://fscdn.rohm.com/en/products/databook/datasheet/ic/motor/dc/bd16939aefv-c-e.pdf)
 
-// >>>>>>>>>>>>>>>>>>>>>>>>> Pin-Mapping <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+The BD16939 has six individually commandable half-bridges.
+It uses an SPI-interface with the following properties:
+- frequency up to 4MHz (tested and stable at 1MHz..)
+- SPI_MODE1 => CPOL=0 CPHA=1
+- MSBFIRST
 
-// ----------------------------------------------------------------------------
+*******************************************************************************
+                           Library Description
+*******************************************************************************
 
-// >>>>>>>>>>>>>>>>>>>>>>>>> Project Parameters <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+This library is intendet to be an abstraction for the BD16939 main features.
+Since the six half-bridges are mostly used eighter as high/low-side switches
+or as three full-bridges to command dc-motors, this library focuses on those
+use cases.
 
-// ----------------------------------------------------------------------------
+The naming convention for the six half bridges is bound to the use case, so
+whenever the library is used to command the single bridges, they will be
+called hb1, hb2 ...hb6. If used to command motors, the bridges will be named
+motA (hb1+hb2) , motB (hb3+hb4) and motC (hb5 + hb6).
 
-// ============================================================================
+*/
 
-// ============================================================================
-// Macros
-// ============================================================================
+#pragma once
 
-/*============================================================================
-Globals and Enums
-============================================================================*/
+#include <Arduino.h>
+#include <SPI.h>
+#include "BD16939_registers.h"
 
-/*============================================================================
-Functions
-============================================================================*/
+#define BD16939_LIB_VERSION (F("0.1.0"))
 
-#endif /* BD16939_H_ */
+// STATUS/ERROR CODES
+#define OK 1
+#define UNDEFINED 0
+#define GENERAL_ERROR -1
+#define INIT_ERROR -2
+#define ERROR_WRITE -3
+#define ERROR_READ -4
+
+namespace BD16939
+{
+  enum halfbridge
+  {
+    hb1,
+    hb2,
+    hb3,
+    hb4,
+    hb5,
+    hb6,
+  };
+
+  enum fullbridge
+  {
+    motA,
+    motB,
+    motC,
+  };
+
+  enum switchstate
+  {
+    low = 0,
+    high,
+    off,
+    left,
+    right,
+  };
+
+  class Driver
+  {
+  private:
+    SPIClass* spi;
+    SPISettings spisettings;       
+    uint8_t sspin; 
+    int8_t state;
+    uint16_t reg_write[2];
+    uint16_t reg_state[4];
+    
+
+  public:    
+    Driver():
+      spi(nullptr),
+      spisettings(SPISettings(1000000,MSBFIRST,SPI_MODE1)),
+      sspin(-1),
+      state(UNDEFINED)    
+    {}
+
+    bool begin(SPIClass* /*pSPIClass*/, uint8_t /*SS*/, uint32_t /*SPI-Frequency*/);
+    bool begin(SPIClass* /*pSPIClass*/, uint8_t /*SS*/);
+    uint16_t send(uint16_t); // ..just for debugging purposes..
+    int8_t setbridge(halfbridge /*hb-number(1->6)*/, switchstate);
+    int8_t setmotor(fullbridge /*Motor*/, switchstate);
+    int8_t getstate();
+  };
+};
 
 /*============================================================================
   END OF FILE
