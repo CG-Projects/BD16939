@@ -82,7 +82,7 @@ namespace BD16939
     right,
   };
 
-  class Driver
+  class Device
   {
   private:
     SPIClass *spi;
@@ -100,7 +100,7 @@ namespace BD16939
     
 
   public:
-    Driver() : spi(nullptr),
+    Device() : spi(nullptr),
                spisettings(SPISettings(1000000 /*1MHz*/, MSBFIRST, SPI_MODE1)),
                sspin(-1),
                state(UNDEFINED)

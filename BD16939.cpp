@@ -2,7 +2,7 @@
 //    FILE: BD16939.cpp
 //  AUTHOR: Chris Gaiser
 // VERSION: 0.1.0
-// PURPOSE: Arduino library for SPI triple H-Bridge driver from Rhom
+// PURPOSE: Arduino library for SPI triple H-Bridge Device from Rhom
 //     URL:
 //
 //  HISTORY:
@@ -11,14 +11,8 @@
 #include "BD16939.h"
 
 using namespace BD16939;
-// #define OK 1
-// #define UNDEFINED 0
-// #define GENERAL_ERROR -1
-// #define INIT_ERROR -2
-// #define ERROR_WRITE -3
-// #define ERROR_READ -4
 
-void Driver::printstate()
+void Device::printstate()
 {
     Serial.print("State: ");
     switch (state)
@@ -44,7 +38,7 @@ void Driver::printstate()
     }
 }
 
-void Driver::updateregs()
+void Device::updateregs()
 {
     spi->beginTransaction(spisettings);
 
@@ -69,7 +63,7 @@ void Driver::updateregs()
     printregs();
 }
 
-void Driver::printregs()
+void Device::printregs()
 {
     Serial.print(" in1: ");
     Serial.print(reg_in1);
@@ -85,7 +79,7 @@ void Driver::printregs()
     Serial.println(reg_out4);
 }
 
-void Driver::reset()
+void Device::reset()
 {
     bitWrite(reg_in1, SSR, 1);
     bitWrite(reg_in2, SSR, 1);
@@ -94,7 +88,7 @@ void Driver::reset()
     bitWrite(reg_in2, SSR, 0);
 }
 
-bool Driver::begin(SPIClass *extspi, uint8_t ss)
+bool Device::begin(SPIClass *extspi, uint8_t ss)
 {
     spi = extspi;
     sspin = ss;
@@ -130,13 +124,13 @@ bool Driver::begin(SPIClass *extspi, uint8_t ss)
     }
 }
 
-bool Driver::begin(SPIClass *extspi, uint8_t ss, uint32_t freq)
+bool Device::begin(SPIClass *extspi, uint8_t ss, uint32_t freq)
 {
     spisettings._clock = freq;
     return begin(extspi, ss);
 }
 
-uint16_t Driver::send(uint16_t val)
+uint16_t Device::send(uint16_t val)
 {
     if (spi != nullptr)
     {
@@ -150,7 +144,7 @@ uint16_t Driver::send(uint16_t val)
     return 255;
 }
 
-int8_t Driver::setmotor(fullbridge motor /*Motor*/, switchstate swstate)
+int8_t Device::setmotor(fullbridge motor /*Motor*/, switchstate swstate)
 {
     switch (motor)
     {

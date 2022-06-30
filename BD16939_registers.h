@@ -9,7 +9,7 @@
                              Register Description
 *******************************************************************************
 
-The Driver has two input-registers (in this Document called A and B) and four 
+The Device has two input-registers (in this Document called A and B) and four 
 output-registers. Since in SPI-Mode every Write-Register-Operation simultaniously 
 returns a Value, in this case the return value can be chosen to be one of two available
 "pages" (in this Document numbered as 0 and 1). By selecting the Read-Address,
