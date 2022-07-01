@@ -41,6 +41,8 @@ motA (hb1+hb2) , motB (hb3+hb4) and motC (hb5 + hb6).
 
 #define BD16939_LIB_VERSION (F("0.1.0"))
 
+extern HardwareSerial* serial;
+
 // STATUS/ERROR CODES
 #define OK 1
 #define UNDEFINED 0

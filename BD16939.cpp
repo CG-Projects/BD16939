@@ -12,32 +12,6 @@
 
 using namespace BD16939;
 
-void Device::printstate()
-{
-    Serial.print("State: ");
-    switch (state)
-    {
-    case OK:
-        Serial.println("OK");
-        break;
-    case UNDEFINED:
-        Serial.println("UNDEFINED");
-        break;
-    case GENERAL_ERROR:
-        Serial.println("GENERAL_ERROR");
-        break;
-    case INIT_ERROR:
-        Serial.println("INIT_ERROR");
-        break;
-    case ERROR_WRITE:
-        Serial.println("ERROR_WRITE");
-        break;    
-    case ERROR_READ:
-        Serial.println("ERROR_READ");
-        break;   
-    }
-}
-
 void Device::updateregs()
 {
     spi->beginTransaction(spisettings);
@@ -63,20 +37,45 @@ void Device::updateregs()
     printregs();
 }
 
+void Device::printstate()
+{
+    serial->print("State: ");
+    switch (state)
+    {
+    case OK:
+        serial->println("OK");
+        break;
+    case UNDEFINED:
+        serial->println("UNDEFINED");
+        break;
+    case GENERAL_ERROR:
+        serial->println("GENERAL_ERROR");
+        break;
+    case INIT_ERROR:
+        serial->println("INIT_ERROR");
+        break;
+    case ERROR_WRITE:
+        serial->println("ERROR_WRITE");
+        break;    
+    case ERROR_READ:
+        serial->println("ERROR_READ");
+        break;   
+    }
+}
 void Device::printregs()
 {
-    Serial.print(" in1: ");
-    Serial.print(reg_in1);
-    Serial.print(" in2: ");
-    Serial.println(reg_in2);
-    Serial.print(" out1: ");
-    Serial.print(reg_out1);
-    Serial.print(" out2: ");
-    Serial.print(reg_out2);
-    Serial.print(" out3: ");
-    Serial.print(reg_out3);
-    Serial.print(" out4: ");
-    Serial.println(reg_out4);
+    serial->print(" in1: ");
+    serial->print(reg_in1);
+    serial->print(" in2: ");
+    serial->println(reg_in2);
+    serial->print(" out1: ");
+    serial->print(reg_out1);
+    serial->print(" out2: ");
+    serial->print(reg_out2);
+    serial->print(" out3: ");
+    serial->print(reg_out3);
+    serial->print(" out4: ");
+    serial->println(reg_out4);
 }
 
 void Device::reset()
@@ -109,17 +108,17 @@ bool Device::begin(SPIClass *extspi, uint8_t ss)
 
     reset();
 
-    Serial.print("Driver init..");
+    serial->print("Driver init..");
     if (reg_out1 | reg_out2 | reg_out3 | reg_out4)
     {
         state = OK;
-        Serial.println("OK!");
+        serial->println("OK!");
         return true;
     }
     else
     {
         state = INIT_ERROR;
-        Serial.println("ERROR!");
+        serial->println("ERROR!");
         return false;
     }
 }
