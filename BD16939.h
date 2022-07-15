@@ -156,7 +156,7 @@ namespace BD16939
     regin2,
     regout1,
     regout2,
-    regout3, 
+    regout3,
     regout4,
   };
 
@@ -174,8 +174,6 @@ namespace BD16939
     uint16_t reg_out3;
     uint16_t reg_out4;
 
-    
-
   public:
     Device() : spi(nullptr),
                spisettings(SPISettings(1000000 /*1MHz*/, MSBFIRST, SPI_MODE1)),
@@ -184,7 +182,8 @@ namespace BD16939
     {
     }
 
-    void updateregs(); // Sends the input-registers and recieves all four output-registers
+    void writeregs(); // Sends the input-registers
+    void readregs();  // Recieves all four output-registers
     bool begin(SPIClass * /*pSPIClass*/, uint8_t /*SS*/, uint32_t /*SPI-Frequency*/);
     bool begin(SPIClass * /*pSPIClass*/, uint8_t /*SS*/);
 
@@ -192,10 +191,10 @@ namespace BD16939
     int8_t setbridge(halfbridge /*hb-number(1->6)*/, switchstate);
     int8_t setmotor(fullbridge /*Motor*/, switchstate);
     uint16_t getregint(regname); // get specified Register content as integer value
-    bool getreg(regbit); // get specified Register-bit as bool value
-    void printstate();    // print out driver state..
-    void printregs();     // print out all input and output register..
-    void reset();         // reset driver
+    bool getreg(regbit);         // get specified Register-bit as bool value
+    void printstate();           // print out driver state..
+    void printregs();            // print out all input and output register..
+    void reset();                // reset driver
   };
 };
 

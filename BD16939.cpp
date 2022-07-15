@@ -194,20 +194,35 @@ uint16_t Device::getregint(regname rn)
     }
 }
 
-void Device::updateregs()
+void Device::writeregs()
 {
     spi->beginTransaction(spisettings);
 
     digitalWrite(sspin, LOW);
-    reg_out1 = spi->transfer16(reg_in1); // Write input-register 1 and read output register A0
+    spi->transfer16(reg_in1); // Write input-register 1 and read output register A0
     digitalWrite(sspin, HIGH);
     delayMicroseconds(20);
     digitalWrite(sspin, LOW);
-    reg_out3 = spi->transfer16(reg_in2); // Write input-register 2 and read output register B0
+    spi->transfer16(reg_in2); // Write input-register 2 and read output register B0
+    digitalWrite(sspin, HIGH);
+    delayMicroseconds(20);
+
+    spi->endTransaction();
+}
+void Device::readregs()
+{ 
+    spi->beginTransaction(spisettings);
+
+    digitalWrite(sspin, LOW);
+    reg_out1 = spi->transfer16(OUTPUT_REGA0); // Write nothing and read output register A0
     digitalWrite(sspin, HIGH);
     delayMicroseconds(20);
     digitalWrite(sspin, LOW);
     reg_out2 = spi->transfer16(OUTPUT_REGA1); // Write nothing and read output register A1
+    digitalWrite(sspin, HIGH);
+    delayMicroseconds(20);
+    digitalWrite(sspin, LOW);
+    reg_out3 = spi->transfer16(OUTPUT_REGB0); // Write nothing and read output register B0
     digitalWrite(sspin, HIGH);
     delayMicroseconds(20);
     digitalWrite(sspin, LOW);
@@ -248,9 +263,10 @@ void Device::reset()
 {
     bitWrite(reg_in1, SSR, 1);
     bitWrite(reg_in2, SSR, 1);
-    updateregs();
+    writeregs();    
     bitWrite(reg_in1, SSR, 0);
     bitWrite(reg_in2, SSR, 0);
+    readregs();
 }
 
 bool Device::begin(SPIClass *extspi, uint8_t ss)
@@ -274,8 +290,9 @@ bool Device::begin(SPIClass *extspi, uint8_t ss)
     spi->setHwCs(false);
     pinMode(sspin, OUTPUT);
 
-    updateregs();
-    // reset();
+    writeregs();
+    readregs();
+    //reset();    
 
     serial->print("Driver init..");
     if (reg_out1 | reg_out2 | reg_out3 | reg_out4)
@@ -414,7 +431,8 @@ int8_t Device::setmotor(fullbridge motor /*Motor*/, switchstate swstate)
         break;
     }
 
-    updateregs();
+    writeregs();
+    readregs();
 
     return state;
 }
