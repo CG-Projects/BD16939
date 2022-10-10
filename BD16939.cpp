@@ -233,32 +233,33 @@ void Device::readregs()
     spi->endTransaction();
 }
 
-void Device::printstate()
+String Device::getstate()
 {
-    serial->print("State: ");
+    String ret = "State: ";
+
     switch (state)
     {
     case OK:
-        serial->println("OK");
+        ret +="OK";
         break;
     case UNDEFINED:
-        serial->println("UNDEFINED");
+        ret +="UNDEFINED";
         break;
     case GENERAL_ERROR:
-        serial->println("GENERAL_ERROR");
+        ret +="GENERAL_ERROR";
         break;
     case INIT_ERROR:
-        serial->println("INIT_ERROR");
+        ret +="INIT_ERROR";
         break;
     case ERROR_WRITE:
-        serial->println("ERROR_WRITE");
+        ret +="ERROR_WRITE";
         break;
     case ERROR_READ:
-        serial->println("ERROR_READ");
+        ret +="ERROR_READ";
         break;
     }
+    return ret;
 }
-
 void Device::reset()
 {
     bitWrite(reg_in1, SSR, 1);
@@ -294,17 +295,17 @@ bool Device::begin(SPIClass *extspi, uint8_t ss)
     readregs();
     //reset();    
 
-    serial->print("Driver init..");
+    // serial->print("Driver init..");
     if (reg_out1 | reg_out2 | reg_out3 | reg_out4)
     {
         state = OK;
-        serial->println("OK!");
+        // serial->println("OK!");
         return true;
     }
     else
     {
         state = INIT_ERROR;
-        serial->println("ERROR!");
+        // serial->println("ERROR!");
         return false;
     }
 }

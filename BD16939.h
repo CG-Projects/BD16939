@@ -41,8 +41,6 @@ motA (hb1+hb2) , motB (hb3+hb4) and motC (hb5 + hb6).
 
 #define BD16939_LIB_VERSION (F("0.1.0"))
 
-extern HardwareSerial *serial;
-
 // STATUS/ERROR CODES
 #define OK 1
 #define UNDEFINED 0
@@ -192,7 +190,7 @@ namespace BD16939
     int8_t setmotor(fullbridge /*Motor*/, switchstate);
     uint16_t getregint(regname); // get specified Register content as integer value
     bool getreg(regbit);         // get specified Register-bit as bool value
-    void printstate();           // print out driver state..
+    String getstate();           // print out driver state..
     void printregs();            // print out all input and output register..
     void reset();                // reset driver
   };
