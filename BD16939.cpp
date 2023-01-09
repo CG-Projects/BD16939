@@ -2,7 +2,7 @@
 //    FILE: BD16939.cpp
 //  AUTHOR: Chris Gaiser
 // VERSION: 0.1.0
-// PURPOSE: Arduino library for SPI triple H-Bridge Device from Rhom
+// PURPOSE: Arduino library for SPI triple H-Bridge BD16939 from Rhom
 //     URL:
 //
 //  HISTORY:
@@ -10,154 +10,152 @@
 
 #include "BD16939.h"
 
-using namespace BD16939;
-
-bool Device::getreg(regbit reg)
+bool BD16939::getreg(regbit reg)
 {
     switch (reg)
     {
         // ovps,       // Over Voltage Protection Status
-    case ovps:
+    case regbit::ovps:
         return (uint8_t)bitRead(reg_out3, OVPS);
         break;
         // uvlos,      // Under-Voltage-Lock-Out Status
-    case uvlos:
+    case regbit::uvlos:
         return (uint8_t)bitRead(reg_out3, UVLOS);
         break;
         // tsds,       // Thermal Shutdown Status
-    case tsds:
+    case regbit::tsds:
         return (uint8_t)bitRead(reg_out2, TSDS);
         break;
         // tws,        // Thermal Warning Status
-    case tws:
+    case regbit::tws:
         return (uint8_t)bitRead(reg_out2, TWS);
         break;
         // hss1,       // Status High Side 1 (OUT1)
-    case hss1:
+    case regbit::hss1:
         return (uint8_t)bitRead(reg_out1, HSS1);
         break;
         // hss2,       // Status High Side 2 (OUT2)
-    case hss2:
+    case regbit::hss2:
         return (uint8_t)bitRead(reg_out1, HSS2);
         break;
         // hss3,       // Status High Side 3 (OUT3)
-    case hss3:
+    case regbit::hss3:
         return (uint8_t)bitRead(reg_out1, HSS3);
         break;
         // hss4,       // Status High Side 4 (OUT4)
-    case hss4:
+    case regbit::hss4:
         return (uint8_t)bitRead(reg_out1, HSS4);
         break;
         // hss5,       // Status High Side 5 (OUT5)
-    case hss5:
+    case regbit::hss5:
         return (uint8_t)bitRead(reg_out3, HSS5);
         break;
         // hss6,       // Status High Side 6 (OUT6)
-    case hss6:
+    case regbit::hss6:
         return (uint8_t)bitRead(reg_out3, HSS6);
         break;
         // lss1,       // Status Low Side 1 (OUT1)
-    case lss1:
+    case regbit::lss1:
         return (uint8_t)bitRead(reg_out1, LSS1);
         break;
         // lss2,       // Status Low Side 2 (OUT2)
-    case lss2:
+    case regbit::lss2:
         return (uint8_t)bitRead(reg_out1, LSS2);
         break;
         // lss3,       // Status Low Side 3 (OUT3)
-    case lss3:
+    case regbit::lss3:
         return (uint8_t)bitRead(reg_out1, LSS3);
         break;
         // lss4,       // Status Low Side 4 (OUT4)
-    case lss4:
+    case regbit::lss4:
         return (uint8_t)bitRead(reg_out1, LSS4);
         break;
         // lss5,       // Status Low Side 5 (OUT5)
-    case lss5:
+    case regbit::lss5:
         return (uint8_t)bitRead(reg_out3, LSS5);
         break;
         // lss6,       // Status Low Side 6 (OUT6)
-    case lss6:
+    case regbit::lss6:
         return (uint8_t)bitRead(reg_out3, LSS6);
         break;
         // ocps,       // Over Current Protection Status
-    case ocps:
+    case regbit::ocps:
         return (uint8_t)bitRead(reg_out3, OCPS);
         break;
         // ocph1,      // Over Current Protection High Side Status OUT1
-    case ocph1:
+    case regbit::ocph1:
         return (uint8_t)bitRead(reg_out2, OCPH1);
         break;
         // ocph2,      // Over Current Protection High Side Status OUT2
-    case ocph2:
+    case regbit::ocph2:
         return (uint8_t)bitRead(reg_out2, OCPH2);
         break;
         // ocph3,      // Over Current Protection High Side Status OUT3
-    case ocph3:
+    case regbit::ocph3:
         return (uint8_t)bitRead(reg_out2, OCPH3);
         break;
         // ocph4,      // Over Current Protection High Side Status OUT4
-    case ocph4:
+    case regbit::ocph4:
         return (uint8_t)bitRead(reg_out2, OCPH4);
         break;
         // ocph5,      // Over Current Protection High Side Status OUT5
-    case ocph5:
+    case regbit::ocph5:
         return (uint8_t)bitRead(reg_out4, OCPH5);
         break;
         // ocph6,      // Over Current Protection High Side Status OUT6
-    case ocph6:
+    case regbit::ocph6:
         return (uint8_t)bitRead(reg_out4, OCPH6);
         break;
         // ocpl1,      // Over Current Protection Low Side Status OUT1
-    case ocpl1:
+    case regbit::ocpl1:
         return (uint8_t)bitRead(reg_out2, OCPL1);
         break;
         // ocpl2,      // Over Current Protection Low Side Status OUT2
-    case ocpl2:
+    case regbit::ocpl2:
         return (uint8_t)bitRead(reg_out2, OCPL2);
         break;
         // ocpl3,      // Over Current Protection Low Side Status OUT3
-    case ocpl3:
+    case regbit::ocpl3:
         return (uint8_t)bitRead(reg_out2, OCPL3);
         break;
         // ocpl4,      // Over Current Protection Low Side Status OUT4
-    case ocpl4:
+    case regbit::ocpl4:
         return (uint8_t)bitRead(reg_out2, OCPL4);
         break;
         // ocpl5,      // Over Current Protection Low Side Status OUT5
-    case ocpl5:
+    case regbit::ocpl5:
         return (uint8_t)bitRead(reg_out4, OCPL5);
         break;
         // ocpl6,      // Over Current Protection Low Side Status OUT6
-    case ocpl6:
+    case regbit::ocpl6:
         return (uint8_t)bitRead(reg_out4, OCPL6);
         break;
         // underloads, // Under Loads Status
-    case underloads:
+    case regbit::underloads:
         return (uint8_t)bitRead(reg_out3, UNDERLOADS);
         break;
         // underload1, // Under Load Status OUT1
-    case underload1:
+    case regbit::underload1:
         return (uint8_t)bitRead(reg_out2, UNDERLOAD1);
         break;
         // underload2, // Under Load Status OUT2
-    case underload2:
+    case regbit::underload2:
         return (uint8_t)bitRead(reg_out2, UNDERLOAD2);
         break;
         // underload3, // Under Load Status OUT3
-    case underload3:
+    case regbit::underload3:
         return (uint8_t)bitRead(reg_out2, UNDERLOAD3);
         break;
         // underload4, // Under Load Status OUT4
-    case underload4:
+    case regbit::underload4:
         return (uint8_t)bitRead(reg_out2, UNDERLOAD4);
         break;
         // underload5, // Under Load Status OUT5
-    case underload5:
+    case regbit::underload5:
         return (uint8_t)bitRead(reg_out4, UNDERLOAD5);
         break;
         // underload6, // Under Load Status OUT6
-    case underload6:
+    case regbit::underload6:
         return (uint8_t)bitRead(reg_out4, UNDERLOAD6);
         break;
     }
@@ -165,26 +163,26 @@ bool Device::getreg(regbit reg)
     return false;
 }
 
-uint16_t Device::getregint(regname rn)
+uint16_t BD16939::getregint(Register rn)
 {
     switch (rn)
     {
-    case regin1:
+    case Register::in1:
         return reg_in1;
         break;
-    case regin2:
+    case Register::in2:
         return reg_in2;
         break;
-    case regout1:
+    case Register::out1:
         return reg_out1;
         break;
-    case regout2:
+    case Register::out2:
         return reg_out2;
         break;
-    case regout3:
+    case Register::out3:
         return reg_out3;
         break;
-    case regout4:
+    case Register::out4:
         return reg_out4;
         break;
 
@@ -194,7 +192,7 @@ uint16_t Device::getregint(regname rn)
     }
 }
 
-void Device::writeregs()
+void BD16939::writeregs()
 {
     spi->beginTransaction(spisettings);
 
@@ -209,7 +207,7 @@ void Device::writeregs()
 
     spi->endTransaction();
 }
-void Device::readregs()
+void BD16939::readregs()
 { 
     spi->beginTransaction(spisettings);
 
@@ -233,7 +231,7 @@ void Device::readregs()
     spi->endTransaction();
 }
 
-String Device::getstate()
+String BD16939::getstate()
 {
     String ret = "State: ";
 
@@ -260,7 +258,7 @@ String Device::getstate()
     }
     return ret;
 }
-void Device::reset()
+void BD16939::reset()
 {
     bitWrite(reg_in1, SSR, 1);
     bitWrite(reg_in2, SSR, 1);
@@ -270,7 +268,7 @@ void Device::reset()
     readregs();
 }
 
-bool Device::begin(SPIClass *extspi, uint8_t ss)
+bool BD16939::begin(SPIClass *extspi, uint8_t ss)
 {
     // ---------- prepare input register A --------------
     reg_in1 = INPUT_REGA; // set base address
@@ -310,13 +308,13 @@ bool Device::begin(SPIClass *extspi, uint8_t ss)
     }
 }
 
-bool Device::begin(SPIClass *extspi, uint8_t ss, uint32_t freq)
+bool BD16939::begin(SPIClass *extspi, uint8_t ss, uint32_t freq)
 {
     spisettings._clock = freq;
     return begin(extspi, ss);
 }
 
-uint16_t Device::send(uint16_t val)
+uint16_t BD16939::send(uint16_t val)
 {
     if (spi != nullptr)
     {
@@ -330,35 +328,35 @@ uint16_t Device::send(uint16_t val)
     return 255;
 }
 
-int8_t Device::setmotor(fullbridge motor /*Motor*/, switchstate swstate)
+int8_t BD16939::setmotor(fullbridge motor /*Motor*/, switchstate swstate)
 {
     switch (motor)
     {
 
-    case motA:
+    case fullbridge::motA:
         switch (swstate)
         {
-        case left:
+        case switchstate::left:
             bitWrite(reg_in1, HSC2, 1);
             bitWrite(reg_in1, LSC2, 0);
             bitWrite(reg_in1, HSC1, 0);
             bitWrite(reg_in1, LSC1, 1);
             break;
-        case right:
+        case switchstate::right:
             bitWrite(reg_in1, HSC2, 0);
             bitWrite(reg_in1, LSC2, 1);
             bitWrite(reg_in1, HSC1, 1);
             bitWrite(reg_in1, LSC1, 0);
             break;
-        case highZ:
-        case off:
-        case offLow:
+        case switchstate::highZ:
+        case switchstate::off:
+        case switchstate::offLow:
             bitWrite(reg_in1, HSC2, 0);
             bitWrite(reg_in1, LSC2, 0);
             bitWrite(reg_in1, HSC1, 0);
             bitWrite(reg_in1, LSC1, 0);
             break;
-        case offHigh:
+        case switchstate::offHigh:
             bitWrite(reg_in1, HSC2, 1);
             bitWrite(reg_in1, LSC2, 0);
             bitWrite(reg_in1, HSC1, 1);
@@ -367,30 +365,30 @@ int8_t Device::setmotor(fullbridge motor /*Motor*/, switchstate swstate)
         }
         break;
 
-    case motB:
+    case fullbridge::motB:
         switch (swstate)
         {
-        case left:
+        case switchstate::left:
             bitWrite(reg_in1, HSC4, 1);
             bitWrite(reg_in1, LSC4, 0);
             bitWrite(reg_in1, HSC3, 0);
             bitWrite(reg_in1, LSC3, 1);
             break;
-        case right:
+        case switchstate::right:
             bitWrite(reg_in1, HSC4, 0);
             bitWrite(reg_in1, LSC4, 1);
             bitWrite(reg_in1, HSC3, 1);
             bitWrite(reg_in1, LSC3, 0);
             break;
-        case highZ:
-        case off:
-        case offLow:
+        case switchstate::highZ:
+        case switchstate::off:
+        case switchstate::offLow:
             bitWrite(reg_in1, HSC4, 0);
             bitWrite(reg_in1, LSC4, 0);
             bitWrite(reg_in1, HSC3, 0);
             bitWrite(reg_in1, LSC3, 0);
             break;
-        case offHigh:
+        case switchstate::offHigh:
             bitWrite(reg_in1, HSC4, 1);
             bitWrite(reg_in1, LSC4, 0);
             bitWrite(reg_in1, HSC3, 1);
@@ -399,30 +397,30 @@ int8_t Device::setmotor(fullbridge motor /*Motor*/, switchstate swstate)
         }
         break;
 
-    case motC:
+    case fullbridge::motC:
         switch (swstate)
         {
-        case left:
+        case switchstate::left:
             bitWrite(reg_in2, HSC6, 1);
             bitWrite(reg_in2, LSC6, 0);
             bitWrite(reg_in2, HSC5, 0);
             bitWrite(reg_in2, LSC5, 1);
             break;
-        case right:
+        case switchstate::right:
             bitWrite(reg_in2, HSC6, 0);
             bitWrite(reg_in2, LSC6, 1);
             bitWrite(reg_in2, HSC5, 1);
             bitWrite(reg_in2, LSC5, 0);
             break;
-        case highZ:
-        case off:
-        case offLow:
+        case switchstate::highZ:
+        case switchstate::off:
+        case switchstate::offLow:
             bitWrite(reg_in2, HSC6, 0);
             bitWrite(reg_in2, LSC6, 0);
             bitWrite(reg_in2, HSC5, 0);
             bitWrite(reg_in2, LSC5, 0);
             break;
-        case offHigh:
+        case switchstate::offHigh:
             bitWrite(reg_in2, HSC6, 1);
             bitWrite(reg_in2, LSC6, 0);
             bitWrite(reg_in2, HSC5, 1);
