@@ -52,6 +52,28 @@ motA (hb1+hb2) , motB (hb3+hb4) and motC (hb5 + hb6).
 class BD16939
 {
 private:
+   enum class Register
+   {
+      in1,
+      in2,
+      out1,
+      out2,
+      out3,
+      out4,
+   };
+
+   SPIClass *spi;
+   SPISettings spisettings;
+   uint8_t sspin;
+   int8_t state;
+   uint16_t reg_in1;
+   uint16_t reg_in2;
+   uint16_t reg_out1;
+   uint16_t reg_out2;
+   uint16_t reg_out3;
+   uint16_t reg_out4;
+
+public:
    enum class regbit
    {
       // ****************************************************************
@@ -117,29 +139,6 @@ private:
       underload5, // Under Load Status OUT5
       underload6, // Under Load Status OUT6
    };
-
-   enum class Register
-   {
-      in1,
-      in2,
-      out1,
-      out2,
-      out3,
-      out4,
-   };
-
-   SPIClass *spi;
-   SPISettings spisettings;
-   uint8_t sspin;
-   int8_t state;
-   uint16_t reg_in1;
-   uint16_t reg_in2;
-   uint16_t reg_out1;
-   uint16_t reg_out2;
-   uint16_t reg_out3;
-   uint16_t reg_out4;
-
-public:
    enum class halfbridge
    {
       hb1 = 1,
@@ -169,16 +168,16 @@ public:
       offHigh,
       offLow,
       left,
-      right,      
+      right,
    };
 
    BD16939() : spi(nullptr),
-              spisettings(SPISettings(1000000 /*1MHz*/, MSBFIRST, SPI_MODE1)),
-              sspin(-1),
-              state(UNDEFINED){};
+               spisettings(SPISettings(1000000 /*1MHz*/, MSBFIRST, SPI_MODE1)),
+               sspin(-1),
+               state(UNDEFINED){};
 
    // Sends the input-registers
-   void writeregs();   
+   void writeregs();
    // Recieves all four output-registers
    void readregs();
    // Sets the SPI-Class for the Device: [param1=SPIClass-Pointer], [param2=SlaveSelectPin],
@@ -192,10 +191,10 @@ public:
    int8_t setbridge(halfbridge /*hb-number(1->6)*/, switchstate);
    int8_t setmotor(fullbridge /*Motor*/, switchstate);
    uint16_t getregint(Register); // get specified Register content as integer value
-   bool getreg(regbit);         // get specified Register-bit as bool value
-   String getstate();           // print out driver state..
-   void printregs();            // print out all input and output register..
-   void reset();                // reset driver
+   bool getreg(regbit);          // get specified Register-bit as bool value
+   String getstate();            // print out driver state..
+   void printregs();             // print out all input and output register..
+   void reset();                 // reset driver
 };
 
 /*============================================================================
